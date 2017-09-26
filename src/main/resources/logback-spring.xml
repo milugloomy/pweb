@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+	<!-- 开发环境 -->
+	<springProfile name="dev">
+		<property name="FILE_PATH" value="d:/tmp" />  
+		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${FILE_PATH}/log.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${FILE_PATH}/log-%d{yyyy-MM-dd}.log</FileNamePattern>
+			</rollingPolicy>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+		</appender>
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+
+	<!-- 生产环境 -->
+	<springProfile name="prod">
+		<property name="FILE_PATH" value="/opt/tmp" />
+		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${FILE_PATH}/log.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<FileNamePattern>${FILE_PATH}/log-%d{yyyy-MM-dd}.log</FileNamePattern>
+			</rollingPolicy>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+		</appender>
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+</configuration>
+
+  

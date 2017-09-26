@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baqi.pweb.dao.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.baqi.pweb.bean.Company">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="taxNo" jdbcType="VARCHAR" property="taxno" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+    <result column="bankNo" jdbcType="VARCHAR" property="bankno" />
+    <result column="cardNo" jdbcType="VARCHAR" property="cardno" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+  </resultMap>
+  <insert id="insert" parameterType="com.baqi.pweb.bean.Company">
+    insert into company (id, name, taxNo, 
+      address, tel, bank, 
+      bankNo, cardNo, owner
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{taxno,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, 
+      #{bankno,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="selectByName" resultType="com.baqi.pweb.bean.Company">
+  	select * from company where name=#{name}
+  </select>
+  <select id="selectById" resultType="com.baqi.pweb.bean.Company">
+  	select * from company where name=#{id}
+  </select>
+  <select id="selectAll" resultType="com.baqi.pweb.bean.Company">
+  	select * from company
+  </select>
+  <insert id="update" parameterType="com.baqi.pweb.bean.Company">
+    update company set name=#{name},taxNo=#{taxno},address=#{address},
+    	tel=#{tel}, bank=#{bank},bankNo=#{bankno},cardNo=#{cardno},owner=#{owner}
+    where id=#{id}
+  </insert>
+  <select id="delete" parameterType="int">
+  	delete from company where id=#{id}
+  </select>
+</mapper>
