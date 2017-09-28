@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<meta name="decription" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>登录</title>
+	<link href="css/weui.css"  rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="container" id="divBody" style="margin-top:30%;">
+    <div class="page__bd">
+        <div class="weui-cells__title">登录</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">账号</label></div>
+                <div class="weui-cell__bd">
+                    <input v-model="username" class="weui-input" type="text" placeholder="请输入账号">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+                <div class="weui-cell__bd">
+                    <input v-model="password" class="weui-input" type="password" placeholder="请输入密码">
+                </div>
+            </div>
+        <label for="weuiAgree" class="weui-agree" style="font-size:16px;padding-left:10%;">
+            <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox" 
+            	style="width:23px;height:23px;top:5px">
+            <span class="weui-agree__text">
+               	一周内自动登录
+            </span>
+        </label>
+
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" v-on:click="login" id="showTooltips">登录</a>
+        </div>
+    </div>
+    <div class="page__ft">
+    </div>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		var that=this;
+		//查询service字段，若已登录，直接跳转
+		that.service=getQueryString("service")||"/pweb/company.html";
+		
+		post2SRV("isLogin",function(data){
+			that.isLogin=data;
+			if(that.isLogin==true){
+				window.location.href=that.service;
+			}else{
+				var cookieUsername=getCookie("username");
+				var cookiePassword=getCookie("password");
+				if(cookieUsername!=null && cookiePassword!=null){
+					db.username=cookieUsername;
+					db.password=cookiePassword;
+				}
+			}
+		},"json");
+	},	
+	methods:{
+		login:function(){
+			var user={
+				username:db.username,
+				password:db.password
+			}
+			post2SRV("doLogin",user,function(data){
+				if(document.getElementById("weuiAgree").checked==true){
+					var exp = new Date(); 
+				    exp.setTime(exp.getTime() + 7*24*60*60*1000);
+				    
+					document.cookie="username="+db.username+";expires="+exp.toGMTString();
+					document.cookie="password="+db.password+";expires="+exp.toGMTString();
+				}
+				window.location.href=db.service;
+			},"json");
+		}
+	},
+	data:{
+		isLogin:false,		
+		service:"",		
+		username:"",		
+		password:""
+	}
+});
+
+</script>
+</body>
+</html>

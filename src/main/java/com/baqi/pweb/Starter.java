@@ -37,7 +37,7 @@ public class Starter {
 	}
 	
 	//登录过滤器,暂时注释
-	//@Bean
+	@Bean
     public FilterRegistrationBean myFilter1() {  
         FilterRegistrationBean f = new FilterRegistrationBean(new Filter(){
 			public void init(FilterConfig filterConfig) throws ServletException {}
@@ -51,7 +51,7 @@ public class Starter {
 				String uri=request.getRequestURI();
 				
 				if(needLogin(session, uri)){
-					response.sendRedirect("/pweb/login.html");
+					response.sendRedirect("/pweb/login.html?service="+uri);
 				}else{
 					chain.doFilter(servletRequest, servletResponse);
 				}
@@ -62,7 +62,10 @@ public class Starter {
 						|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith("ico") )
 					return false;
 				//登录交易不拦截
-				if(uri.equals("/pweb/login") || uri.equals("/pweb/login.html"))
+				if(uri.equals("/pweb/doLogin") || uri.equals("/pweb/isLogin") || uri.equals("/pweb/login.html"))
+					return false;
+				//政府采购不拦截
+				if(uri.equals("/pweb/zfcg.html") || uri.equals("/pweb/showAll") || uri.equals("/pweb/lastWeek"))
 					return false;
 				//其他的判断session
 				if(session.getAttribute("user")==null)
@@ -71,8 +74,7 @@ public class Starter {
 			}
 			public void destroy() {}
 		});
-        f.addUrlPatterns("*.do");  
-        f.addUrlPatterns("*.jsp");  
+        f.addUrlPatterns("/*");  
         f.setName("myFilter1");
         return f;  
     }
