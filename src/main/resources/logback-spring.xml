@@ -23,7 +23,7 @@
 
 	<!-- 生产环境 -->
 	<springProfile name="prod">
-		<property name="FILE_PATH" value="/opt/tmp" />
+		<property name="FILE_PATH" value="/opt/projects/pweb/tmp" />
 		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 			<file>${FILE_PATH}/log.log</file>
 			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
