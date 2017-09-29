@@ -18,11 +18,13 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.util.ResourceUtils;
 
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -30,6 +32,9 @@ import com.alibaba.druid.support.http.WebStatFilter;
 
 @SpringBootApplication
 public class Starter {
+	
+	@Autowired
+	private Environment env;
 	
 	Logger log=LoggerFactory.getLogger(Starter.class);
 	public static void main(String[] args) {
@@ -62,7 +67,7 @@ public class Starter {
 						|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith("ico") )
 					return false;
 				//登录交易不拦截
-				if(uri.equals("/pweb/doLogin") || uri.equals("/pweb/isLogin") || uri.equals("/pweb/login.html"))
+				if(uri.equals("/pweb/login") || uri.equals("/pweb/isLogin") || uri.equals("/pweb/login.html"))
 					return false;
 				//政府采购不拦截
 				if(uri.equals("/pweb/zfcg.html") || uri.equals("/pweb/showAll") || uri.equals("/pweb/lastWeek"))
@@ -97,8 +102,9 @@ public class Starter {
 		ServletRegistrationBean reg = new ServletRegistrationBean();
 		reg.setServlet(new StatViewServlet());
 		reg.addUrlMappings("/druid/*");
-		reg.addInitParameter("loginUsername", "druid");
-		reg.addInitParameter("loginPassword", "123456");
+		
+		reg.addInitParameter("loginUsername", env.getProperty("druid.username"));
+		reg.addInitParameter("loginPassword", env.getProperty("druid.password"));
 		return reg;
 	}
 	

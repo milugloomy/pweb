@@ -1,5 +1,6 @@
 package com.baqi.pweb.bean;
 
+
 public class Company {
     private Integer id;
 

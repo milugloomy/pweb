@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baqi.pweb.bean.Company;
+import com.baqi.pweb.bean.MyResEntity;
 import com.baqi.pweb.common.BaqiException;
 import com.baqi.pweb.service.CompanyService;
 
@@ -17,19 +18,19 @@ public class CompanyController{
 	private CompanyService companyService;
 	
 	@RequestMapping("/companyList")
-	public List<Company> companyList() throws BaqiException{
+	public MyResEntity companyList() throws BaqiException{
 		List<Company> list=companyService.selectAll();
-		return list;
+		return new MyResEntity(list);
 	}
 	
 	@RequestMapping("/qryCompany")
-	public Company qryCompany(int id) throws BaqiException{
+	public MyResEntity qryCompany(int id) throws BaqiException{
 		Company company=companyService.selectById(id);
-		return company;
+		return new MyResEntity(company);
 	}
 	
 	@RequestMapping("/addCompany")
-	public void addCompany(String name,String taxno,String address,String tel,
+	public MyResEntity addCompany(String name,String taxno,String address,String tel,
 			String bank,String bankno,String cardno,String owner) throws BaqiException{
 		Company company=new Company();
 		company.setName(name);
@@ -41,10 +42,11 @@ public class CompanyController{
 		company.setCardno(cardno);
 		company.setOwner(owner);
 		companyService.insert(company);
+		return new MyResEntity();
 	}
 	
 	@RequestMapping("/updateCompany")
-	public void updateCompany(int id,String name,String taxno,String address,String tel,
+	public MyResEntity updateCompany(int id,String name,String taxno,String address,String tel,
 			String bank,String bankno,String cardno,String owner) throws BaqiException{
 		Company company=new Company();
 		company.setId(id);
@@ -57,10 +59,13 @@ public class CompanyController{
 		company.setCardno(cardno);
 		company.setOwner(owner);
 		companyService.update(company);
+		return new MyResEntity();
+
 	}
 	
 	@RequestMapping("/deleteCompany")
-	public void deleteCompany(int id) throws BaqiException{
+	public MyResEntity deleteCompany(int id) throws BaqiException{
 		companyService.delete(id);
+		return new MyResEntity();
 	}
 }

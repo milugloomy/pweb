@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baqi.pweb.bean.Announce;
+import com.baqi.pweb.bean.MyResEntity;
 import com.baqi.pweb.common.BaqiException;
 import com.baqi.pweb.service.AnnounceService;
 
@@ -25,7 +26,7 @@ public class AnnounceController{
 	private AnnounceService announceService;
 	
 	@RequestMapping("/lastWeek")
-	public List<Announce> lastWeek() throws IOException, BaqiException{
+	public MyResEntity lastWeek() throws IOException, BaqiException{
 		String url="http://www.ccgp-hubei.gov.cn/fnoticeAction!listFNoticeInfos_n.action";
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c=Calendar.getInstance();
@@ -45,19 +46,14 @@ public class AnnounceController{
 		map.put("queryInfo.QYBM","420101");
 		map.put("queryInfo.JHHH","");
 		List<Announce> list=announceService.announceList(url, Method.POST, map);
-		return list;
+		return new MyResEntity(list);
 	}
 	
 	@RequestMapping("/showAll")
-	public List<Announce> showAll(HttpServletRequest request) throws IOException, BaqiException{
+	public MyResEntity showAll(HttpServletRequest request) throws IOException, BaqiException{
 		String url="http://www.ccgp-hubei.gov.cn/pages/html/xzbnotice.html";
 		List<Announce> list=announceService.announceList(url, Method.GET);
-		return list;
+		return new MyResEntity(list);
 	}
 	
-	@RequestMapping("/test")
-	public String test(HttpServletRequest request) throws IOException{
-		return "test";
-	}
-
 }

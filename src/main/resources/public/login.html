@@ -72,7 +72,7 @@ var db=new Vue({
 				username:db.username,
 				password:db.password
 			}
-			post2SRV("doLogin",user,function(data){
+			post2SRV("login",user,function(data){
 				if(document.getElementById("weuiAgree").checked==true){
 					var exp = new Date(); 
 				    exp.setTime(exp.getTime() + 7*24*60*60*1000);
