@@ -111,7 +111,7 @@ var db=new Vue({
 	el:"#divBody",
 	mounted:function(){
 		var that=this;
-		post2SRV("companyList",{a:1},function(data){
+		post2SRV("companyList",function(data){
 			for (var i = 0; i < data.length; i++) {
 				data[i].showName = data[i].name;
 			}
