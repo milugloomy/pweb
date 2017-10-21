@@ -11,7 +11,7 @@ function post2SRV(callUrl,formData,callback,dataType){
 		type:'post',
 		async:true,
 		dataType:dataType,    
-		success:function(data){
+		success:function(data, status, xhr){
 			layer.close(loadLayer);
 			if(data.retcode!="0000"){
 				layer.alert(data.errMsg);
@@ -20,7 +20,7 @@ function post2SRV(callUrl,formData,callback,dataType){
 				callback(data);
 			}
 		},
-		error : function(e) {
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			layer.close(loadLayer);
 			layer.alert("网络忙，请稍后再试！");
 		} 
