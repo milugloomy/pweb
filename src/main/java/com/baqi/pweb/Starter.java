@@ -55,6 +55,18 @@ public class Starter {
 				
 				String uri=request.getRequestURI();
 				
+				//访问登录页判断跳转到service标签的url页
+				if(uri.equals("/pweb/login.html")){
+					if(session.getAttribute("user")!=null){
+						String redirect=request.getParameter("service");
+						redirect=redirect==null?"/pweb/company.html":redirect;
+						response.sendRedirect(redirect);
+					}else{
+						chain.doFilter(servletRequest, servletResponse);
+					}
+					return;
+				}
+				
 				if(needLogin(session, uri)){
 					response.sendRedirect("/pweb/login.html?service="+uri);
 				}else{

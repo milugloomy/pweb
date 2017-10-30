@@ -9,7 +9,8 @@
 	<link href="css/weui.css"  rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div class="container" id="divBody" style="margin-top:30%;">
+<div class="container" id="divBody" style="position: fixed;
+    top: 50%; margin-top:-200px; width:100%;">
     <div class="page__bd">
         <div class="weui-cells__title">登录</div>
         <div class="weui-cells weui-cells_form">
@@ -48,23 +49,14 @@
 var db=new Vue({
 	el:"#divBody",
 	mounted:function(){
-		var that=this;
-		//查询service字段，若已登录，直接跳转
-		that.service=getQueryString("service")||"/pweb/company.html";
-		
-		post2SRV("isLogin",function(data){
-			that.isLogin=data;
-			if(that.isLogin==true){
-				window.location.href=that.service;
-			}else{
-				var cookieUsername=getCookie("username");
-				var cookiePassword=getCookie("password");
-				if(cookieUsername!=null && cookiePassword!=null){
-					db.username=cookieUsername;
-					db.password=cookiePassword;
-				}
-			}
-		},"json");
+		var cookieUsername=getCookie("username");
+		var cookiePassword=getCookie("password");
+		if(cookieUsername!=null && cookiePassword!=null){
+			this.username=cookieUsername;
+			this.password=cookiePassword;
+			document.getElementById("weuiAgree").checked=true;
+		}
+		this.service=getQueryString("service")||"/pweb/company.html";
 	},	
 	methods:{
 		login:function(){
