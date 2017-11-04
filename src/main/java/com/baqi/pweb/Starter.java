@@ -3,6 +3,7 @@ package com.baqi.pweb;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Properties;
 
@@ -29,6 +30,7 @@ import org.springframework.util.ResourceUtils;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.fastjson.JSONObject;
 
 @SpringBootApplication
 public class Starter {
@@ -68,7 +70,20 @@ public class Starter {
 				}
 				
 				if(needLogin(session, uri)){
-					response.sendRedirect("/pweb/login.html?service="+uri);
+					//ajax请求
+					if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+						response.setContentType("text/html;charset=UTF-8");
+						JSONObject jo=new JSONObject();
+						jo.put("retcode", "302");
+						jo.put("body", "/pweb/login.html");
+						PrintWriter pw=response.getWriter();
+						pw.write(jo.toJSONString());
+						pw.flush();
+						pw.close();
+					//页面请求
+					}else{
+						response.sendRedirect("/pweb/login.html?service="+uri);
+					}
 				}else{
 					chain.doFilter(servletRequest, servletResponse);
 				}

@@ -13,11 +13,17 @@ function post2SRV(callUrl,formData,callback,dataType){
 		dataType:dataType,    
 		success:function(data, status, xhr){
 			layer.close(loadLayer);
-			if(data.retcode!="0000"){
-				layer.alert(data.errMsg);
-			}else{
+			if(data.retcode=="0000"){
 				data=data.body;
 				callback(data);
+			}else{
+				//session超时，重定向
+				if (data.retcode == "302") {
+					window.location.href = data.body;
+					//服务端报错
+				} else {
+					layer.alert(data.errMsg);
+				}
 			}
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
