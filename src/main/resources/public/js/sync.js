@@ -1,3 +1,7 @@
+layer.config({
+  offset: '200px',
+});
+
 function post2SRV(callUrl,formData,callback,dataType){
 	var loadLayer=layer.load(1,{shade: [0.5,'#fff']});
 	if(typeof dataType=='undefined'){
