@@ -68,4 +68,10 @@ public class CompanyController{
 		companyService.delete(id);
 		return new MyResEntity();
 	}
+	
+	@RequestMapping("/downDoc")
+	public MyResEntity downDoc() throws BaqiException{
+		String href="upload/"+companyService.downDoc();
+		return new MyResEntity(href);
+	}
 }

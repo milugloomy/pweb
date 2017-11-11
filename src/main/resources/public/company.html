@@ -32,7 +32,9 @@ th{
 <body>
 <div class="container-fluid"  id="divBody">
 	<div class="page-header" style="margin-top:20px;padding-bottom:0px;">
-	  	<h3>公司详情</h3>
+	  	<h3 style="display: inline;">公司详情</h3>
+	  	<a style="font-size:12px;display:inline;float:right;padding-top: 10px;"
+	  		v-on:click="downDoc">下载docx</a>
 	</div>
 	<div class="input-group" id="inputGroup" style="margin-bottom:5px;">
 	  	<span class="input-group-addon" style="font-size:18px;">搜索</span>
@@ -229,6 +231,11 @@ var db=new Vue({
 				offset: '200px',
 				time: time, //10s后自动关闭
 		  	});
+		},
+		downDoc:function(){
+			post2SRV("downDoc",function(data){
+				window.location.href=data;
+			},"json");
 		}
 	},
 	data:{
